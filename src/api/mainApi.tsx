@@ -1,6 +1,18 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { TodoTypes } from "../lib/types";
 
+function providesList<R extends { id: string | number }[], T extends string>(
+	resultsWithIds: R | undefined, 
+	tagType: T
+) {
+	return resultsWithIds ? 
+		[
+			...resultsWithIds.map(({ id }) => ({ type: tagType, id })), 
+			{ type: tagType, id: 'LIST' }
+		] :
+		[{ type: tagType, id: 'LIST' }];
+}
+
 export const todoApiSlice = createApi({
 	reducerPath: "",
 	baseQuery: fetchBaseQuery({
